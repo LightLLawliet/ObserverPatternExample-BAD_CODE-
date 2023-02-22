@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ObserverPatternExample</string>
+    <string name="go">go</string>
+    <string name="finish">finish</string>
 </resources>
