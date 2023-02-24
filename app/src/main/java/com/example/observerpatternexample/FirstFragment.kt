@@ -1,6 +1,7 @@
 package com.example.observerpatternexample
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,20 @@ class FirstFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_first, container, false)
     }
 
+    private lateinit var nameTextView: TextView
+    private val observer = object : Observer {
+        override fun update(value: String) {
+            nameTextView.text = value
+        }
+    }
+
+    private val loggingObserver = object : Observer {
+        override fun update(value: String) {
+            Log.d("log9101", "value $value")
+        }
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -27,12 +42,19 @@ class FirstFragment : Fragment() {
                 .commit()
         }
 
-        val nameTextView = view.findViewById<TextView>(R.id.nameTextView)
+        nameTextView = view.findViewById(R.id.nameTextView)
 
-        (requireActivity() as MainActivity).observable.addObserver(object : Observer {
-            override fun update(value: String) {
-                nameTextView.text = value
-            }
-        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as MainActivity).observable.removeObserver(observer)
+        (requireActivity() as MainActivity).observable.removeObserver(loggingObserver)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as MainActivity).observable.addObserver(observer)
+        (requireActivity() as MainActivity).observable.addObserver(loggingObserver)
     }
 }
