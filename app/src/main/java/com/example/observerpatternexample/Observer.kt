@@ -1,6 +1,6 @@
 package com.example.observerpatternexample
 
-interface Observer {
+interface Observer<T> {
 
-    fun update(value: String)
+    fun update(value: T)
 }

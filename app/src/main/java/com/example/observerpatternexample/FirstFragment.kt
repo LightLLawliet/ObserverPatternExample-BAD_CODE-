@@ -19,13 +19,13 @@ class FirstFragment : Fragment() {
     }
 
     private lateinit var nameTextView: TextView
-    private val observer = object : Observer {
+    private val observer = object : Observer<String> {
         override fun update(value: String) {
             nameTextView.text = value
         }
     }
 
-    private val loggingObserver = object : Observer {
+    private val loggingObserver = object : Observer<String> {
         override fun update(value: String) {
             Log.d("log9101", "value $value")
         }
@@ -48,13 +48,13 @@ class FirstFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        (requireActivity() as MainActivity).observable.removeObserver(observer)
-        (requireActivity() as MainActivity).observable.removeObserver(loggingObserver)
+        (requireActivity() as MainActivity).observable.removeObserver("main")
+        (requireActivity() as MainActivity).observable.removeObserver("logging")
     }
 
     override fun onResume() {
         super.onResume()
-        (requireActivity() as MainActivity).observable.addObserver(observer)
-        (requireActivity() as MainActivity).observable.addObserver(loggingObserver)
+        (requireActivity() as MainActivity).observable.addObserver("main", observer)
+        (requireActivity() as MainActivity).observable.addObserver("logging", loggingObserver)
     }
 }
